@@ -73,7 +73,7 @@ document.getElementById('rsvpForm').addEventListener('submit', async (e) => {
 
   // WHATSAPP
   const mensaje = `Hola, soy ${nombre} ${apellido} y ${asistencia === 'Sí' ? 'sí' : 'no'} asistiré a la boda`;
-  const telefono = '18299365994';
+  const telefono = '18296442008';
   const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
 
   window.open(url, '_blank');
