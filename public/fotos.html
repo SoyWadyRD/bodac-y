@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/fotos.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <title>Revisión de Fotos</title>
+</head>
+<body>
+
+<a href="index.html" id="backBtn">← Volver</a>
+<h1>Revisión de Fotos Pendientes</h1>
+
+<button id="trashBtn" title="Fotos en papelera"><i class="fas fa-trash-alt"></i></button>
+
+<div id="message"></div>
+<div class="photo-grid" id="photoGrid"></div>
+
+<!-- Modal papelera -->
+<div id="trashModal">
+  <div id="trashContent">
+    <h2>Fotos en Papelera</h2>
+    <div id="trashGrid"></div>
+    <button id="closeTrashModal">Cerrar</button>
+  </div>
+</div>
+
+<script src="js/fotos.js"></script>
+
+</body>
+</html>

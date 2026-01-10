@@ -1,0 +1,88 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f6f1eb, #fff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* CONTENEDOR */
+.login-container {
+  width: 100%;
+  padding: 20px;
+}
+
+/* TARJETA */
+.login-card {
+  max-width: 380px;
+  margin: auto;
+  background: #ffffff;
+  padding: 35px 30px;
+  border-radius: 18px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+/* TÍTULO */
+.login-card h2 {
+  margin-bottom: 25px;
+  color: #c59d5f;
+  font-weight: 600;
+}
+
+/* INPUTS */
+.login-card input {
+  width: 100%;
+  padding: 13px 15px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  font-size: 15px;
+  transition: border 0.3s ease;
+}
+
+.login-card input:focus {
+  outline: none;
+  border-color: #c59d5f;
+}
+
+/* ERROR */
+.error {
+  min-height: 18px;
+  color: #d9534f;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+/* BOTÓN */
+.login-card button {
+  width: 100%;
+  padding: 14px;
+  background: #c59d5f;
+  border: none;
+  border-radius: 14px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.login-card button:hover {
+  background: #b0894f;
+  transform: translateY(-2px);
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 30px 20px;
+  }
+}

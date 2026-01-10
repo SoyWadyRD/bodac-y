@@ -1,0 +1,145 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+}
+
+.admin-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #c59d5f;
+}
+/* TABLA */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+thead { background: #c59d5f; color: #fff; }
+th, td { padding: 12px; text-align: center; border-bottom: 1px solid #eee; }
+
+tbody tr:hover { background: #fafafa; }
+
+/* BOTÓN VOLVER */
+/* Botón volver */
+.back-btn {
+  background: none;
+  border: none;
+  color: #c59d5f;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+/* RESUMEN */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: #f7f7f7;
+  padding: 18px;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+}
+
+.stat-card span {
+  display: block;
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+}
+
+.stat-card small {
+  font-size: 13px;
+  color: #777;
+}
+
+.stat-card.yes span { color: #2e7d32; }
+.stat-card.no span { color: #c62828; }
+
+
+
+
+
+
+
+
+
+
+/* Exportar */
+.export-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.export-btn {
+  padding: 10px 20px;
+  background: #c59d5f;
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.export-btn:hover {
+  background: #b0894f;
+}
+
+/* ===============================
+   MOBILE CARDS (LIMPIO)
+================================ */
+/* MOBILE */
+@media (max-width: 768px) {
+  table, thead, tbody {
+    display: block;
+    width: 100%;
+  }
+  thead { display: none; }
+
+  tbody tr {
+    display: block;
+    background: #fff;
+    margin-bottom: 18px;
+    padding: 16px;
+    border-radius: 16px;
+    box-shadow: 0 10px 22px rgba(0,0,0,0.08);
+  }
+
+  td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: none;
+    padding: 8px 0;
+    font-size: 15px;
+  }
+
+  td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #666;
+  }
+
+  td:last-child {
+    color: #999;
+    font-size: 13px;
+  }
+}
+
+
+

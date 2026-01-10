@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <title>Nuestra Boda</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+    <!-- OVERLAY -->
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<div id="adminPanel" class="admin-panel">
+  <div class="admin-btn" id="btnAttendance" title="Asistencias">
+    <i class="fa-solid fa-users"></i>
+  </div>
+
+  <div class="admin-btn" id="btnPhotos" title="Fotos">
+    <i class="fa-solid fa-camera"></i>
+  </div>
+</div>
+
+
+<!-- MENÚ LATERAL -->
+<aside class="side-menu" id="sideMenu">
+  <div class="side-menu-header">
+    <span class="close-menu" id="closeMenu">&times;</span>
+  </div>
+
+  <ul class="side-menu-links">
+    <li><a href="#inicio">Inicio</a></li>
+    <li><a href="#detalles">Informaciones</a></li>
+    <li><a href="#gallery">Galeria</a></li>
+  </ul>
+</aside>
+
+
+  <!-- HEADER / HERO -->
+  <header class="hero" id="inicio">
+    <div class="overlay"></div>
+
+    <nav class="nav">
+  <div class="menu-btn" id="openMenu">
+    <i class="fa-solid fa-bars"></i>
+  </div>
+</nav>
+
+
+    <div class="hero-content">
+      <h1>Nuestra Boda</h1>
+      <p class="date">22 de Noviembre · 2:00 PM</p>
+
+      <div class="countdown" id="countdown">
+        <div><span id="days">00</span><small>Días</small></div>
+        <div><span id="hours">00</span><small>Horas</small></div>
+        <div><span id="minutes">00</span><small>Min</small></div>
+        <div><span id="seconds">00</span><small>Seg</small></div>
+      </div>
+    </div>
+  </header>
+
+<!-- SLIDER DE IMÁGENES -->
+<section class="slider-section" id="sliderSection" style="display:none;">
+  <h2>Fotos Destacadas</h2>
+
+  <div class="slider-wrapper">
+    <div class="slider-container" id="sliderContainer"></div>
+  </div>
+
+  <!-- Botones admin -->
+  <div id="uploadContainer" class="upload-container" style="display:none;">
+    <input type="file" id="photoInput" accept="image/*" style="display:none;">
+    <button id="uploadBtn">Subir Foto</button>
+    <button id="reviewBtn">Revisar Fotos</button>
+  </div>
+</section>
+
+<!-- Modal para revisar y eliminar fotos -->
+<div id="reviewModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span id="closeModal" class="close">&times;</span>
+    <h3>Administrar Fotos</h3>
+    <div id="reviewPhotosContainer" style="display:flex; gap:20px; max-height:400px; overflow-y:auto;">
+      <!-- Fotos y botones se generan con JS -->
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+  <!-- INFORMACIÓN -->
+  <section class="info">
+    <h2>Estás Invitado</h2>
+    <p>
+      Nos encantaría compartir contigo este día tan especial.
+      Acompáñanos a celebrar nuestra unión rodeados de amor y alegría.
+    </p>
+  </section>
+
+
+<!-- DETALLES DE LA BODA -->
+<section class="details" id="detalles">
+  <div class="details-grid">
+
+    <div class="detail-card">
+      <i class="fa-solid fa-hotel"></i>
+      <h3>Estadía</h3>
+      <p>
+        La estadía en el hotel será de <strong>4 días y 3 noches</strong>,
+        desde el <strong>21 hasta el 24 de noviembre</strong>.
+      </p>
+    </div>
+
+    <div class="detail-card">
+      <i class="fa-solid fa-wallet"></i>
+      <h3>Reserva Inicial</h3>
+      <p>
+        Para asegurar tu lugar, la reserva tiene un costo de
+        <strong>RD$4,000 por adulto</strong>.
+      </p>
+    </div>
+
+    <div class="detail-card">
+      <i class="fa-solid fa-bed"></i>
+      <h3>Habitación Familiar</h3>
+      <p>
+        Costo de <strong>US$930</strong>.
+        Incluye <strong>2 adultos</strong> y
+        <strong>1 niño gratis</strong> hasta los 12 años.
+      </p>
+    </div>
+
+    <div class="detail-card">
+      <i class="fa-solid fa-bed"></i>
+      <h3>Habitación Triple</h3>
+      <p>
+        Capacidad para <strong>3 adultos</strong> con un costo de
+        <strong>US$1,330</strong> +
+        <strong>1 niño gratis</strong> hasta los 12 años.
+      </p>
+    </div>
+
+    <div class="detail-card">
+      <i class="fa-solid fa-calendar-check"></i>
+      <h3>Plan de Pagos</h3>
+      <p>
+        Contamos con una dinámica de pagos para mayor comodidad:
+        abonos los días <strong>15 y 30</strong> de cada mes.
+      </p>
+    </div>
+
+    <div class="detail-card">
+      <i class="fa-solid fa-money-bill-wave"></i>
+      <h3>Abono Mensual</h3>
+      <p>
+        Abono mínimo de <strong>RD$1,500 por persona</strong>,
+        con la opción de pagar montos mayores si así lo deseas.
+      </p>
+    </div>
+
+    <div class="detail-card">
+      <i class="fa-solid fa-credit-card"></i>
+      <h3>Datos de Pago</h3>
+      <p>
+        <strong>Banco BHD:</strong> 21480000044<br>
+        <strong>Banreservas:</strong> 9607364439<br>
+        <strong>Cédula:</strong> 402-2609642-4<br>
+        Colocar su nombre en el comentario.
+      </p>
+    </div>
+
+    <div class="detail-card">
+      <i class="fa-solid fa-calendar-days"></i>
+      <h3>Fecha Límite</h3>
+      <p>
+        Luego de confirmar con el hotel,
+        se informará la <strong>fecha límite</strong> para completar el pago.
+      </p>
+    </div>
+
+    <div class="detail-card">
+      <i class="fa-solid fa-champagne-glasses"></i>
+      <h3>Confirmación Final</h3>
+      <p>
+        La reserva oficial del evento se realizará
+        durante la <strong>primera semana de febrero</strong>.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+
+<!-- SECCIÓN DE REGALO -->
+<section id="regalo">
+  <img src="img/Estas_invitado.jpeg" alt="Regalo" class="regalo-img" id="regaloImg">
+</section>
+
+<!-- LIGHTBOX REGALO -->
+<div id="regaloLightbox" class="lightbox">
+  <div class="lightbox-content">
+    <span id="closeRegaloLightbox" class="lightbox-close">&times;</span>
+    <img id="regaloLightboxImg" src="" alt="Regalo Grande">
+  </div>
+</div>
+
+
+
+
+
+<!-- GALERÍA (solo visual por ahora) -->
+<section class="gallery" id="gallery">
+  <h2>Galería</h2>
+
+  <!-- Botón subir foto -->
+  <div id="uploadUserContainer">
+    <input type="file" id="galleryPhotoInput" accept="image/*" style="display:none;">
+    <button id="galleryUploadBtn">Subir Foto</button>
+    <p id="uploadMessage" style="color:green; display:none;"></p>
+  </div>
+
+  <div class="gallery-grid" id="galleryGrid">
+    <!-- Las fotos aprobadas aparecerán aquí -->
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div id="lightboxOverlay">
+  <div id="lightboxContent">
+    <img id="lightboxImg" src="" alt="Foto">
+    <div id="lightboxBtns">
+      <button id="closeLightboxBtn" class="lightbox-btn" title="Cerrar">
+        <i class="fas fa-times"></i>
+      </button>
+      <button id="downloadLightboxBtn" class="lightbox-btn" title="Descargar">
+        <i class="fas fa-download"></i>
+      </button>
+      <button id="deleteLightboxBtn" class="lightbox-btn" title="Eliminar" style="display:none; background:#dc3545;">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+  <!-- CONFIRMACIÓN DE ASISTENCIA -->
+<section class="rsvp" id="rsvp">
+  <h2>Confirma tu Asistencia</h2>
+
+  <form id="rsvpForm">
+
+  <div class="form-group">
+    <div class="input-box">
+      <input type="text" id="nombre" placeholder="Nombre">
+      <small class="error" id="errorNombre"></small>
+    </div>
+
+    <div class="input-box">
+      <input type="text" id="apellido" placeholder="Apellido">
+      <small class="error" id="errorApellido"></small>
+    </div>
+  </div>
+
+  <div class="radio-group">
+    <p>¿Asistirás a la boda?</p>
+    <label>
+      <input type="radio" name="asistencia" value="Sí"> Sí
+    </label>
+    <label>
+      <input type="radio" name="asistencia" value="No"> No
+    </label>
+    <small class="error" id="errorAsistencia"></small>
+  </div>
+
+  <button type="submit">Confirmar Asistencia</button>
+</form>
+
+</section>
+
+<div id="rsvpSuccess" class="rsvp-success">
+  <h3>¡Gracias por confirmar! 💖</h3>
+  <p>Tu respuesta ha sido enviada correctamente.</p>
+</div>
+
+
+
+  <footer class="footer">
+    <p>Con amor 💖 · 22/11</p>
+  </footer>
+
+  <script src="js/countdown.js"></script>
+  <script src="js/menu.js"></script>
+  <script src="js/resetHash.js"></script>
+  <script src="js/scrollCards.js"></script>
+  <script src="js/rsvp.js"></script>
+  <script src="js/admin-ui.js"></script>
+  <script src="js/botones_admin.js"></script>
+  <script src="js/slider.js"></script>
+  <script src="js/subir_foto_usuario.js"></script>
+  <script src="js/gallery.js"></script>
+  <script src="js/lightbox_gift.js"></script>
+
+
+
+
+</body>
+</html>

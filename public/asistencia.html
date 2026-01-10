@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Asistencias - Admin</title>
+  <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/asistencia.css">
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<section class="admin-container">
+
+  <button class="back-btn" onclick="window.location.href='index.html'">← Volver</button>
+
+  <h2>Confirmaciones de Asistencia</h2>
+
+  <!-- RESUMEN -->
+  <div class="stats">
+    <div class="stat-card">
+      <span id="totalCount">0</span>
+      <small>Total solicitudes</small>
+    </div>
+    <div class="stat-card yes">
+      <span id="yesCount">0</span>
+      <small>Asistirán</small>
+    </div>
+    <div class="stat-card no">
+      <span id="noCount">0</span>
+      <small>No asistirán</small>
+    </div>
+  </div>
+
+  <!-- BOTÓN EXPORTAR -->
+  <div class="export-container">
+    <button id="exportBtn" class="export-btn">Exportar a Excel</button>
+  </div>
+
+  <table id="attendanceTable">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Asistencia</th>
+        <th>Fecha</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+</section>
+
+<script src="js/asistencia.js"></script>
+</body>
+</html>
