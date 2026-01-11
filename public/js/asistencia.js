@@ -36,6 +36,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
+
+
+
+
 // EXPORTAR A EXCEL con RESUMEN arriba
 document.getElementById('exportBtn').addEventListener('click', async () => {
   try {
@@ -46,26 +50,46 @@ document.getElementById('exportBtn').addEventListener('click', async () => {
     let yes = data.filter(a => a.asistencia === 'Sí').length;
     let no = data.filter(a => a.asistencia === 'No').length;
 
-    // Creamos un array para Excel con resumen
-    const wsData = [
-      { Resumen: "Total solicitudes", Cantidad: total },
-      { Resumen: "Asistirán", Cantidad: yes },
-      { Resumen: "No asistirán", Cantidad: no },
-      {}, // fila vacía
-      ...data.map(item => ({
-        Nombre: item.nombre,
-        Apellido: item.apellido,
-        Asistencia: item.asistencia,
-        Fecha: item.fecha
-      }))
-    ];
+    const csvRows = [];
 
-    const ws = XLSX.utils.json_to_sheet(wsData, { skipHeader: false });
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Asistencias");
-    XLSX.writeFile(wb, "Asistencias.xlsx");
+    // Resumen
+    csvRows.push(['Resumen', 'Cantidad']);
+    csvRows.push(['Total solicitudes', total]);
+    csvRows.push(['Asistirán', yes]);
+    csvRows.push(['No asistirán', no]);
+    csvRows.push([]); // línea vacía
+
+    // Cabecera
+    csvRows.push(['Nombre', 'Apellido', 'Asistencia', 'Fecha']);
+
+    // Datos
+    data.forEach(item => {
+      csvRows.push([
+        item.nombre,
+        item.apellido,
+        item.asistencia,
+        item.fecha
+      ]);
+    });
+
+    // Convertir a CSV
+    const csvContent = csvRows
+      .map(row => row.map(v => `"${v ?? ''}"`).join(','))
+      .join('\n');
+
+    // Descargar
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Asistencias.csv';
+    a.click();
+
+    URL.revokeObjectURL(url);
 
   } catch (error) {
-    console.error("Error exportando a Excel:", error);
+    console.error('Error exportando CSV:', error);
   }
 });
+
