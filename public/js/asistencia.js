@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
 
+  // ===== VALIDAR ADMIN =====
   const role = localStorage.getItem('role');
   if (role !== 'admin') {
     window.location.href = '/index.html';
@@ -37,10 +38,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('noCount').textContent = no;
 
   } catch (error) {
-    console.error('Error cargando asistencias', error);
+    console.error('Error cargando asistencias:', error);
   }
 
-  // ===== EXPORTAR CSV =====
+  // ===== EXPORTAR CSV (BACKEND) =====
   const exportBtn = document.getElementById('exportBtn');
 
   if (!exportBtn) {
@@ -48,56 +49,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  exportBtn.addEventListener('click', async () => {
-    try {
-      const res = await fetch('/api/attendance');
-      const data = await res.json();
-
-      let total = data.length;
-      let yes = data.filter(a => a.asistencia === 'Sí').length;
-      let no = data.filter(a => a.asistencia === 'No').length;
-
-      const csvRows = [];
-
-      csvRows.push(['Resumen', 'Cantidad']);
-      csvRows.push(['Total solicitudes', total]);
-      csvRows.push(['Asistirán', yes]);
-      csvRows.push(['No asistirán', no]);
-      csvRows.push([]);
-
-      csvRows.push(['Nombre', 'Apellido', 'Asistencia', 'Fecha']);
-
-      data.forEach(item => {
-        csvRows.push([
-          item.nombre,
-          item.apellido,
-          item.asistencia,
-          item.fecha
-        ]);
-      });
-
-      const csvContent = csvRows
-        .map(row => row.map(v => `"${v ?? ''}"`).join(','))
-        .join('\n');
-
-      const blob = new Blob([csvContent], {
-        type: 'text/csv;charset=utf-8;'
-      });
-
-      const url = URL.createObjectURL(blob);
-
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'Asistencias.csv';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-
-      URL.revokeObjectURL(url);
-
-    } catch (error) {
-      console.error('Error exportando CSV:', error);
-    }
+  exportBtn.addEventListener('click', () => {
+    // 🔥 Descarga directa desde el backend (APK compatible)
+    window.location.href = '/api/attendance/export';
   });
 
 });
