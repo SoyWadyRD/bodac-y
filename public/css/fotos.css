@@ -24,10 +24,7 @@
   margin-bottom: 15px;
   }
 
-  #backBtn:hover {
-    background: #007bff;
-    color: #fff;
-  }
+ 
 
   /* Botón de papelera */
   #trashBtn {
