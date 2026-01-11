@@ -168,7 +168,10 @@ router.get('/export', async (req, res) => {
       const ninosExtra = ninos > habitaciones ? ninos - habitaciones : 0;
       const costoExtra = ninosExtra * 235;
 
-      csv += `"${item.nombre}","${item.apellido}","${item.asistencia}","${moment(item.createdAt).tz('America/Santo_Domingo').format('DD/MM/YY hh:mm A')}","${totalPersonasItem}","${habitaciones}","${ninosExtra}","${costoExtra}","${acompanantesLista.trim()}"\n`;
+      // ✅ Comilla simple delante de la fecha para Excel
+      const fechaExcel = `'${moment(item.createdAt).tz('America/Santo_Domingo').format('DD/MM/YY hh:mm A')}`;
+
+      csv += `"${item.nombre}","${item.apellido}","${item.asistencia}","${fechaExcel}","${totalPersonasItem}","${habitaciones}","${ninosExtra}","${costoExtra}","${acompanantesLista.trim()}"\n`;
     });
 
     // 🔥 BOM UTF-8 para Excel
@@ -183,6 +186,7 @@ router.get('/export', async (req, res) => {
     res.status(500).send('Error generando CSV');
   }
 });
+
 
 
 
