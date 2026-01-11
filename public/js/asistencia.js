@@ -46,22 +46,28 @@ data.forEach(item => {
     acompanantesHTML = `<p class="acompanantes-list">—</p>`;
   }
 
-  // Calcular niños extra
-  let adultos = 1; // titular
+  // ✨ Cálculo de personas y habitaciones según asistencia
+  let adultos = 0;
   let ninos = 0;
-  (item.acompanantes || []).forEach(a => {
-    if(a.tipo === 'adulto') adultos++;
-    if(a.tipo === 'niño') {
-      if(a.edad && a.edad > 12) adultos++; // niño >12 contado como adulto
-      else ninos++;
-    }
-  });
-  const habitaciones = Math.ceil(adultos / 3);
-  const ninosExtra = ninos > habitaciones ? ninos - habitaciones : 0;
-  const costoExtra = ninosExtra * 235;
+  let habitaciones = 0;
+  let ninosExtra = 0;
+  let totalPersonasItem = 0;
+  let costoExtra = 0;
 
-  // Número total de personas = adultos + niños
-  const totalPersonasItem = adultos + ninos;
+  if (item.asistencia === 'Sí') {
+    adultos = 1; // titular
+    (item.acompanantes || []).forEach(a => {
+      if (a.tipo === 'adulto') adultos++;
+      if (a.tipo === 'niño') {
+        if (a.edad && a.edad > 12) adultos++;
+        else ninos++;
+      }
+    });
+    habitaciones = Math.ceil(adultos / 3);
+    ninosExtra = ninos > habitaciones ? ninos - habitaciones : 0;
+    costoExtra = ninosExtra * 235;
+    totalPersonasItem = adultos + ninos;
+  }
 
   // Generar card
   tr.innerHTML = `
@@ -83,6 +89,7 @@ data.forEach(item => {
 
   tbody.appendChild(tr);
 });
+
 
 
 

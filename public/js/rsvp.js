@@ -184,14 +184,17 @@ if (edadEl) {
     personasContainer.appendChild(div);
   });
 
-  personasContainer.style.display = personas.length ? 'block' : 'none';
+   personasContainer.style.display = personas.length ? 'block' : 'none';
 
-  // recalcular solo si la persona principal va
   const asistenciaInput = document.querySelector('input[name="asistencia"]:checked');
-  if (asistenciaInput && asistenciaInput.value === 'Sí') {
+  if (!asistenciaInput) return;
+
+  if (asistenciaInput.value === 'Sí') {
     calcularCapacidad();
   } else {
-    capacidadMsg.style.display = 'none';
+    // SI NO ASISTE → mostrar 0
+    capacidadMsg.textContent = 'Adultos: 0 | Niños: 0 | Habitaciones: 0';
+    capacidadMsg.style.display = 'block';
   }
 }
 
@@ -200,6 +203,9 @@ if (edadEl) {
 // CÁLCULO DE HABITACIÓN
 // ===============================
 function calcularCapacidad() {
+  const asistenciaInput = document.querySelector('input[name="asistencia"]:checked');
+  if (!asistenciaInput || asistenciaInput.value === 'No') return;
+
   let adultos = 1;
   let niños = 0;
   let niñosExtra = 0;
@@ -221,6 +227,7 @@ function calcularCapacidad() {
   capacidadMsg.textContent = mensaje;
   capacidadMsg.style.display = 'block';
 }
+
 
 // ===============================
 // SUBMIT

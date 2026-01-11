@@ -11,27 +11,35 @@ router.post('/', async (req, res) => {
       a.nombre && a.nombre.trim().length >= 2 && ['adulto', 'niño'].includes(a.tipo)
     );
 
-    // Calcular niños extra
     let adultos = 1;
     let ninos = 0;
 
-    acompValidos.forEach(a => {
-      if (a.tipo === 'adulto') adultos++;
-      if (a.tipo === 'niño') {
-        if (Number(a.edad) > 12) adultos++;
-        else ninos++;
-      }
-    });
+    if (asistencia === 'Sí') {
+      acompValidos.forEach(a => {
+        if (a.tipo === 'adulto') adultos++;
+        if (a.tipo === 'niño') {
+          if (Number(a.edad) > 12) adultos++;
+          else ninos++;
+        }
+      });
+    } else {
+      // Si NO asiste, todo en 0
+      adultos = 0;
+      ninos = 0;
+    }
 
-    const habitaciones = Math.ceil(adultos / 3);
+    const habitaciones = asistencia === 'Sí' ? Math.ceil(adultos / 3) : 0;
     const ninosExtra = ninos > habitaciones ? ninos - habitaciones : 0;
     const costoExtra = ninosExtra * 235;
+    const totalPersonas = adultos + ninos;
 
     const nuevaConfirmacion = new Attendance({
       nombre,
       apellido,
       asistencia,
       acompanantes: acompValidos,
+      habitaciones,
+      totalPersonas,
       costoExtra
     });
 
@@ -45,44 +53,43 @@ router.post('/', async (req, res) => {
 });
 
 
+
 router.get('/', async (req, res) => {
   try {
     const asistencias = await Attendance.find().sort({ createdAt: -1 });
 
     let totalPersonas = 0;
-    let totalHabitaciones = 0;
+let totalHabitaciones = 0;
 
-    const data = asistencias.map(item => {
-      let adultos = 1;
-      let ninos = 0;
+const data = asistencias.map(item => {
+  let adultos = item.asistencia === 'Sí' ? 1 : 0;
+  let ninos = 0;
 
-      const acomp = (item.acompanantes || []).map(a => {
-        if (a.tipo === 'adulto') adultos++;
-        if (a.tipo === 'niño') {
-          if (Number(a.edad) > 12) adultos++;
-          else ninos++;
-        }
-        return {
-          nombre: a.nombre,
-          tipo: a.tipo,
-          edad: a.edad || ''
-        };
-      });
-
-      const habitaciones = Math.ceil(adultos / 3);
-      totalHabitaciones += habitaciones;
-      totalPersonas += adultos + ninos;
-
-      return {
-        id: item._id,
-        nombre: item.nombre,
-        apellido: item.apellido,
-        asistencia: item.asistencia,
-        fecha: moment(item.createdAt).tz('America/Santo_Domingo').format('DD/MM/YY hh:mm A'),
-        acompanantes: acomp,
-        habitaciones
-      };
+  if(item.asistencia === 'Sí') {
+    (item.acompanantes || []).forEach(a => {
+      if(a.tipo === 'adulto') adultos++;
+      if(a.tipo === 'niño') {
+        if(Number(a.edad) > 12) adultos++;
+        else ninos++;
+      }
     });
+  }
+
+  const habitaciones = item.asistencia === 'Sí' ? Math.ceil(adultos / 3) : 0;
+  totalHabitaciones += habitaciones;
+  totalPersonas += adultos + ninos;
+
+  return {
+    id: item._id,
+    nombre: item.nombre,
+    apellido: item.apellido,
+    asistencia: item.asistencia,
+    fecha: moment(item.createdAt).tz('America/Santo_Domingo').format('DD/MM/YY hh:mm A'),
+    acompanantes: item.acompanantes,
+    totalPersonas: adultos + ninos,
+    habitaciones
+  };
+});
 
     res.json({ data, totalPersonas, totalHabitaciones });
   } catch (error) {
@@ -100,25 +107,14 @@ router.get('/export', async (req, res) => {
     let yes = asistencias.filter(a => a.asistencia === 'Sí').length;
     let no = asistencias.filter(a => a.asistencia === 'No').length;
 
-    // Totales globales de personas y habitaciones
+    // Totales globales de personas y habitaciones (solo quienes van)
     let totalPersonas = 0;
     let totalHabitaciones = 0;
 
     asistencias.forEach(item => {
       if(item.asistencia === 'Sí') {
-        let adultos = 1; // titular
-        let ninos = 0;
-
-        (item.acompanantes || []).forEach(a => {
-          if(a.tipo === 'adulto') adultos++;
-          if(a.tipo === 'niño') {
-            if(a.edad && a.edad > 12) adultos++; // niño >12 contado como adulto
-            else ninos++;
-          }
-        });
-
-        totalPersonas += adultos + ninos;
-        totalHabitaciones += Math.ceil(adultos / 3);
+        totalPersonas += item.totalPersonas || 0;
+        totalHabitaciones += item.habitaciones || 0;
       }
     });
 
@@ -137,23 +133,25 @@ router.get('/export', async (req, res) => {
 
     // Detalle por cada solicitud
     asistencias.forEach(item => {
-      let adultos = 1; // titular
+      let adultos = item.asistencia === 'Sí' ? 1 : 0;
       let ninos = 0;
       let acompanantesLista = '';
 
-      (item.acompanantes || []).forEach(a => {
-        if(a.tipo === 'adulto') adultos++;
-        if(a.tipo === 'niño') {
-          if(a.edad && a.edad > 12) adultos++;
-          else ninos++;
-        }
-        acompanantesLista += a.tipo === 'niño' 
-          ? `Niño: ${a.nombre} (Edad: ${a.edad}); ` 
-          : `Adulto: ${a.nombre}; `;
-      });
+      if(item.asistencia === 'Sí') {
+        (item.acompanantes || []).forEach(a => {
+          if(a.tipo === 'adulto') adultos++;
+          if(a.tipo === 'niño') {
+            if(a.edad && a.edad > 12) adultos++;
+            else ninos++;
+          }
+          acompanantesLista += a.tipo === 'niño' 
+            ? `Niño: ${a.nombre} (Edad: ${a.edad}); ` 
+            : `Adulto: ${a.nombre}; `;
+        });
+      }
 
       const totalPersonasItem = adultos + ninos;
-      const habitaciones = Math.ceil(adultos / 3);
+      const habitaciones = item.asistencia === 'Sí' ? Math.ceil(adultos / 3) : 0;
       const ninosExtra = ninos > habitaciones ? ninos - habitaciones : 0;
       const costoExtra = ninosExtra * 235;
 
@@ -162,7 +160,6 @@ router.get('/export', async (req, res) => {
 
     // 🔥 BOM UTF-8 PARA EXCEL
     const BOM = '\uFEFF';
-
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
     res.setHeader('Content-Disposition', 'attachment; filename=Asistencias.csv');
 
@@ -173,6 +170,7 @@ router.get('/export', async (req, res) => {
     res.status(500).send('Error generando CSV');
   }
 });
+
 
 
 
