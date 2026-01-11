@@ -7,7 +7,9 @@ const errorAsistencia = document.getElementById('errorAsistencia');
 
 const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
 
+// ===============================
 // VALIDACIÓN EN VIVO
+// ===============================
 nombreInput.addEventListener('input', () => {
   const valor = nombreInput.value.trim();
 
@@ -32,7 +34,9 @@ apellidoInput.addEventListener('input', () => {
   }
 });
 
+// ===============================
 // SUBMIT
+// ===============================
 document.getElementById('rsvpForm').addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -42,7 +46,7 @@ document.getElementById('rsvpForm').addEventListener('submit', async (e) => {
 
   let valido = true;
 
-  // Re-validar al enviar
+  // Re-validar
   if (nombre.length < 2 || !soloLetras.test(nombre)) {
     errorNombre.textContent = 'Ingresa un nombre válido';
     valido = false;
@@ -64,21 +68,86 @@ document.getElementById('rsvpForm').addEventListener('submit', async (e) => {
 
   const asistencia = asistenciaInput.value;
 
+  // ===============================
   // GUARDAR EN BD
-  await fetch('/api/attendance', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ nombre, apellido, asistencia })
-  });
+  // ===============================
+  try {
+    await fetch('/api/attendance', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre, apellido, asistencia })
+    });
+  } catch (err) {
+    console.error('Error guardando asistencia:', err);
+  }
 
-  // WHATSAPP
+  // ===============================
+  // MENSAJE WHATSAPP
+  // ===============================
   const mensaje = `Hola, soy ${nombre} ${apellido} y ${asistencia === 'Sí' ? 'sí' : 'no'} asistiré a la boda`;
   const telefono = '18296442008';
-  const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
+  const whatsappURL = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
 
-  window.open(url, '_blank');
+let redireccionado = false;
 
-  // UI
+
+if (asistencia === 'Sí') {
+  const overlay = document.getElementById('videoOverlay');
+  const video = document.getElementById('invitacionVideo');
+
+  overlay.style.display = 'flex';
+  video.currentTime = 0;
+  video.play();
+
+  let lastTime = 0;
+
+  // Evitar pausa SOLO mientras no termine
+  const evitarPausa = () => {
+    if (!video.ended) {
+      video.play();
+    }
+  };
+
+  video.addEventListener('pause', evitarPausa);
+
+  // Evitar adelantar
+  video.addEventListener('timeupdate', () => {
+    if (video.currentTime < lastTime) {
+      video.currentTime = lastTime;
+    }
+    lastTime = video.currentTime;
+  });
+
+  // Bloquear teclado
+  const bloquear = (e) => e.preventDefault();
+  document.addEventListener('keydown', bloquear);
+  document.addEventListener('contextmenu', bloquear);
+
+  // 🔥 SOLO UNA VEZ
+  video.onended = () => {
+    if (redireccionado) return;
+    redireccionado = true;
+
+    // limpiar todo
+    video.removeEventListener('pause', evitarPausa);
+    document.removeEventListener('keydown', bloquear);
+    document.removeEventListener('contextmenu', bloquear);
+
+    overlay.style.display = 'none';
+
+    // redirigir
+    window.location.href = whatsappURL;
+  };
+
+} else {
+  window.location.href = whatsappURL;
+}
+
+
+
+  // ===============================
+  // UI FINAL
+  // ===============================
   document.getElementById('rsvpForm').style.display = 'none';
   document.getElementById('rsvpSuccess').style.display = 'block';
 });
