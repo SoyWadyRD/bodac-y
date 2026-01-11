@@ -103,18 +103,30 @@ router.get('/export', async (req, res) => {
   try {
     const asistencias = await Attendance.find().sort({ createdAt: 1 });
 
-    let total = asistencias.length;
+    let totalSolicitudes = asistencias.length;
     let yes = asistencias.filter(a => a.asistencia === 'Sí').length;
     let no = asistencias.filter(a => a.asistencia === 'No').length;
 
-    // Totales globales de personas y habitaciones (solo quienes van)
+    // Totales globales recalculados
     let totalPersonas = 0;
     let totalHabitaciones = 0;
 
     asistencias.forEach(item => {
-      if(item.asistencia === 'Sí') {
-        totalPersonas += item.totalPersonas || 0;
-        totalHabitaciones += item.habitaciones || 0;
+      if (item.asistencia === 'Sí') {
+        let adultos = 1; // titular
+        let ninos = 0;
+
+        (item.acompanantes || []).forEach(a => {
+          if (a.tipo === 'adulto') adultos++;
+          if (a.tipo === 'niño') {
+            if (a.edad && a.edad > 12) adultos++;
+            else ninos++;
+          }
+        });
+
+        const habitaciones = Math.ceil(adultos / 3);
+        totalPersonas += adultos + ninos;
+        totalHabitaciones += habitaciones;
       }
     });
 
@@ -122,30 +134,31 @@ router.get('/export', async (req, res) => {
 
     // Resumen
     csv += 'Resumen,Cantidad\n';
-    csv += `Total solicitudes,${total}\n`;
+    csv += `Total solicitudes,${totalSolicitudes}\n`;
     csv += `Asistirán,${yes}\n`;
     csv += `No asistirán,${no}\n`;
     csv += `Total de personas,${totalPersonas}\n`;
     csv += `Total de habitaciones,${totalHabitaciones}\n\n`;
 
-    // Cabecera completa
+    // Cabecera detalle
     csv += 'Nombre,Apellido,Asistencia,Fecha,Total de personas,Habitaciones,Niños adicionales,Costo adicional,Lista de acompañantes\n';
 
-    // Detalle por cada solicitud
+    // Detalle por solicitud
     asistencias.forEach(item => {
       let adultos = item.asistencia === 'Sí' ? 1 : 0;
       let ninos = 0;
       let acompanantesLista = '';
 
-      if(item.asistencia === 'Sí') {
+      if (item.asistencia === 'Sí') {
         (item.acompanantes || []).forEach(a => {
-          if(a.tipo === 'adulto') adultos++;
-          if(a.tipo === 'niño') {
-            if(a.edad && a.edad > 12) adultos++;
+          if (a.tipo === 'adulto') adultos++;
+          if (a.tipo === 'niño') {
+            if (a.edad && a.edad > 12) adultos++;
             else ninos++;
           }
-          acompanantesLista += a.tipo === 'niño' 
-            ? `Niño: ${a.nombre} (Edad: ${a.edad}); ` 
+
+          acompanantesLista += a.tipo === 'niño'
+            ? `Niño: ${a.nombre} (Edad: ${a.edad}); `
             : `Adulto: ${a.nombre}; `;
         });
       }
@@ -158,7 +171,7 @@ router.get('/export', async (req, res) => {
       csv += `"${item.nombre}","${item.apellido}","${item.asistencia}","${moment(item.createdAt).tz('America/Santo_Domingo').format('DD/MM/YY hh:mm A')}","${totalPersonasItem}","${habitaciones}","${ninosExtra}","${costoExtra}","${acompanantesLista.trim()}"\n`;
     });
 
-    // 🔥 BOM UTF-8 PARA EXCEL
+    // 🔥 BOM UTF-8 para Excel
     const BOM = '\uFEFF';
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
     res.setHeader('Content-Disposition', 'attachment; filename=Asistencias.csv');
