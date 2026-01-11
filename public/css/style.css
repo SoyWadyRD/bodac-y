@@ -821,6 +821,69 @@ button:hover {
 
 
 
+
+
+
+
+
+
+
+
+/*VALIDACIONES Y LOGICA*/
+
+
+
+/* Inputs y selects decorados */
+.input-decorado {
+  width: 100%;
+  padding: 8px 12px;
+  margin-top: 4px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.input-decorado:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+  outline: none;
+}
+
+/* Botón eliminar */
+.boton-eliminar {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s ease;
+  margin-top: 10px;
+}
+
+.boton-eliminar:hover {
+  background-color: #c0392b;
+}
+
+/* Tarjeta persona */
+.persona-card {
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  background-color: #858585;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+
+
+
+
+
+
+
 /* ===============================
    RESPONSIVE DESIGN
 ================================ */

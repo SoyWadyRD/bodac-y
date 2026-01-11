@@ -266,38 +266,77 @@
 
 
 
-  <!-- CONFIRMACIÓN DE ASISTENCIA -->
+ <!-- CONFIRMACIÓN DE ASISTENCIA -->
 <section class="rsvp" id="rsvp">
   <h2>Confirma tu Asistencia</h2>
 
   <form id="rsvpForm">
 
-  <div class="form-group">
-    <div class="input-box">
-      <input type="text" id="nombre" placeholder="Nombre">
-      <small class="error" id="errorNombre"></small>
+    <!-- PERSONA PRINCIPAL -->
+    <div class="form-group">
+      <div class="input-box">
+        <input type="text" id="nombre" placeholder="Nombre">
+        <small class="error" id="errorNombre"></small>
+      </div>
+
+      <div class="input-box">
+        <input type="text" id="apellido" placeholder="Apellido">
+        <small class="error" id="errorApellido"></small>
+      </div>
     </div>
 
-    <div class="input-box">
-      <input type="text" id="apellido" placeholder="Apellido">
-      <small class="error" id="errorApellido"></small>
+    <!-- ASISTENCIA -->
+    <div class="radio-group">
+      <p>¿Asistirás a la boda?</p>
+      <label>
+        <input type="radio" name="asistencia" value="Sí"> Sí
+      </label>
+      <label>
+        <input type="radio" name="asistencia" value="No"> No
+      </label>
+      <small class="error" id="errorAsistencia"></small>
     </div>
-  </div>
 
-  <div class="radio-group">
-    <p>¿Asistirás a la boda?</p>
-    <label>
-      <input type="radio" name="asistencia" value="Sí"> Sí
-    </label>
-    <label>
-      <input type="radio" name="asistencia" value="No"> No
-    </label>
-    <small class="error" id="errorAsistencia"></small>
-  </div>
+    <!-- ACOMPAÑANTES -->
+    <div class="radio-group" id="acompanantesGroup" style="display:none;">
+      <p>¿Traerás acompañantes?</p>
+      <label>
+        <input type="radio" name="acompanantes" value="no"> No
+      </label>
+      <label>
+        <input type="radio" name="acompanantes" value="si"> Sí
+      </label>
+      <span id="errorAcompanantes" class="error-msg" style="color:red; font-size:13px;"></span>
+    </div>
 
-  <button type="submit">Confirmar Asistencia</button>
-</form>
+    <!-- TIPO RELACIÓN (INFORMATIVO) -->
+    <div class="form-group" id="relacionGroup" style="display:none;">
+      <select id="relacion">
+        <option value="">Tipo de relación</option>
+        <option value="familia">Familiar</option>
+        <option value="pareja">Pareja</option>
+        <option value="amigo">Amigo</option>
+      </select>
+    </div>
 
+    <!-- LISTA DE PERSONAS -->
+    <div id="personasContainer" style="display:none;">
+      <h4>Acompañantes</h4>
+
+      <!-- Aquí JS agregará personas -->
+    </div>
+
+    <!-- BOTÓN AGREGAR PERSONA -->
+    <button type="button" id="addPersonaBtn" style="display:none;">
+      ➕ Agregar persona
+    </button>
+
+    <!-- MENSAJES DE CAPACIDAD -->
+    <p id="capacidadMsg" style="display:none; color:#c59d5f; margin-top:10px; margin-bottom: 10px;"></p>
+
+    <button type="submit">Confirmar Asistencia</button>
+
+  </form>
 </section>
 
 <div id="rsvpSuccess" class="rsvp-success">

@@ -36,7 +36,6 @@ tbody tr {
   display: block;
   background: #fff;
   margin-bottom: 18px;
-  padding: 16px;
   border-radius: 16px;
   box-shadow: 0 10px 22px rgba(0,0,0,0.08);
 }
@@ -46,7 +45,6 @@ td {
   justify-content: space-between;
   align-items: center;
   border: none;
-  padding: 8px 0;
   font-size: 15px;
 }
 
@@ -147,7 +145,101 @@ td:last-child {
   }
 }
 
+.card-container {
+  width: 100%;
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px 20px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 
+
+.titular-row {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* NUEVAS FILAS PERSONAS Y HABITACIONES */
+.card-container .info-row {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 15px;
+  margin-top: 6px;
+  padding: 6px 12px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #f7f7f7, #eaeaea);
+}
+
+.card-container .info-row .label {
+  color: #555;
+}
+
+.card-container .info-row .value {
+  color: #1a1a1a;
+  font-weight: 700;
+}
+
+
+.titular-row .label {
+  color: #555;
+}
+
+.titular-row .value {
+  color: #111;
+}
+
+.acompanantes-row {
+  margin-top: 8px;
+}
+
+.acompanantes-list {
+  margin: 4px 0 0 18px;
+  padding: 0;
+  list-style: disc;
+}
+
+.acompanantes-list li {
+  font-size: 14px;
+  margin-bottom: 2px;
+  color: #333;
+}
+
+.footer-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  align-items: center;
+}
+
+.asistencia-badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+  display: inline-block;
+}
+
+.asistencia-badge.yes {
+  background-color: #2e7d32;
+  color: #fff;
+}
+
+.asistencia-badge.no {
+  background-color: #c62828;
+  color: #fff;
+}
+
+.fecha {
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+}
 
 
 
