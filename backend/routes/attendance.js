@@ -77,19 +77,23 @@ router.get('/export', async (req, res) => {
         .format('DD/MM/YYYY hh:mm A')}"\n`;
     });
 
+    // 🔥 BOM UTF-8 PARA EXCEL
+    const BOM = '\uFEFF';
+
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
     res.setHeader(
       'Content-Disposition',
       'attachment; filename=Asistencias.csv'
     );
 
-    res.send(csv);
+    res.send(BOM + csv);
 
   } catch (error) {
     console.error('Error exportando CSV:', error);
     res.status(500).send('Error generando CSV');
   }
 });
+
 
 
 
