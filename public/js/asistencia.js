@@ -1,7 +1,12 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  const role = localStorage.getItem('role');
-  if (role !== 'admin') return window.location.href = '/index.html';
 
+  const role = localStorage.getItem('role');
+  if (role !== 'admin') {
+    window.location.href = '/index.html';
+    return;
+  }
+
+  // ===== CARGAR TABLA =====
   try {
     const res = await fetch('/api/attendance');
     const data = await res.json();
@@ -34,62 +39,65 @@ document.addEventListener('DOMContentLoaded', async () => {
   } catch (error) {
     console.error('Error cargando asistencias', error);
   }
-});
 
+  // ===== EXPORTAR CSV =====
+  const exportBtn = document.getElementById('exportBtn');
 
-
-
-
-// EXPORTAR A EXCEL con RESUMEN arriba
-document.getElementById('exportBtn').addEventListener('click', async () => {
-  try {
-    const res = await fetch('/api/attendance');
-    const data = await res.json();
-
-    let total = data.length;
-    let yes = data.filter(a => a.asistencia === 'Sí').length;
-    let no = data.filter(a => a.asistencia === 'No').length;
-
-    const csvRows = [];
-
-    // Resumen
-    csvRows.push(['Resumen', 'Cantidad']);
-    csvRows.push(['Total solicitudes', total]);
-    csvRows.push(['Asistirán', yes]);
-    csvRows.push(['No asistirán', no]);
-    csvRows.push([]); // línea vacía
-
-    // Cabecera
-    csvRows.push(['Nombre', 'Apellido', 'Asistencia', 'Fecha']);
-
-    // Datos
-    data.forEach(item => {
-      csvRows.push([
-        item.nombre,
-        item.apellido,
-        item.asistencia,
-        item.fecha
-      ]);
-    });
-
-    // Convertir a CSV
-    const csvContent = csvRows
-      .map(row => row.map(v => `"${v ?? ''}"`).join(','))
-      .join('\n');
-
-    // Descargar
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'Asistencias.csv';
-    a.click();
-
-    URL.revokeObjectURL(url);
-
-  } catch (error) {
-    console.error('Error exportando CSV:', error);
+  if (!exportBtn) {
+    console.error('Botón exportBtn no encontrado');
+    return;
   }
-});
 
+  exportBtn.addEventListener('click', async () => {
+    try {
+      const res = await fetch('/api/attendance');
+      const data = await res.json();
+
+      let total = data.length;
+      let yes = data.filter(a => a.asistencia === 'Sí').length;
+      let no = data.filter(a => a.asistencia === 'No').length;
+
+      const csvRows = [];
+
+      csvRows.push(['Resumen', 'Cantidad']);
+      csvRows.push(['Total solicitudes', total]);
+      csvRows.push(['Asistirán', yes]);
+      csvRows.push(['No asistirán', no]);
+      csvRows.push([]);
+
+      csvRows.push(['Nombre', 'Apellido', 'Asistencia', 'Fecha']);
+
+      data.forEach(item => {
+        csvRows.push([
+          item.nombre,
+          item.apellido,
+          item.asistencia,
+          item.fecha
+        ]);
+      });
+
+      const csvContent = csvRows
+        .map(row => row.map(v => `"${v ?? ''}"`).join(','))
+        .join('\n');
+
+      const blob = new Blob([csvContent], {
+        type: 'text/csv;charset=utf-8;'
+      });
+
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Asistencias.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      URL.revokeObjectURL(url);
+
+    } catch (error) {
+      console.error('Error exportando CSV:', error);
+    }
+  });
+
+});
