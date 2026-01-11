@@ -75,7 +75,8 @@ router.get('/export', async (req, res) => {
     asistencias.forEach(item => {
       csv += `"${item.nombre}","${item.apellido}","${item.asistencia}","'${moment(item.createdAt)
   .tz('America/Santo_Domingo')
-  .format('DD/MM/YY HH:mm')}"\n`;
+  .format('DD/MM/YY hh:mm A')}"\n`;
+
 
     });
 
