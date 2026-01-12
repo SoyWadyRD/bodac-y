@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control de Pagos</title>
+  <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/pagos.css">
+</head>
+<body>
+
+    <a href="index.html" class="back-btn">
+  <i class="fa-solid fa-arrow-left"></i>
+  Volver al inicio
+</a>
+
+
+<h1 class="title">
+  <i class="fa-solid fa-cash-register"></i>
+  Control de Pagos
+</h1>
+
+<div id="paymentsContainer" class="cards-container"></div>
+
+
+
+<!-- Modal -->
+<div id="paymentModal" class="modal hidden">
+  <div class="modal-content">
+    <h3 id="modalTitle">
+      <i class="fa-solid fa-coins"></i>
+      Monto
+    </h3>
+
+    <input
+      type="number"
+      id="modalAmount"
+      placeholder="Ingrese monto (RD$)"
+      min="1"
+    />
+
+    <div class="modal-buttons">
+      <button id="modalCancel" class="btn-cancel">
+        Cancelar
+      </button>
+      <button id="modalConfirm" class="btn-confirm">
+        Confirmar
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div id="historyModal" class="modal hidden">
+  <div class="modal-content-history">
+    <h3 id="historyTitle">
+      <i class="fa-solid fa-clock-rotate-left"></i>
+      Historial de pagos
+    </h3>
+
+    <div id="historyList"></div>
+
+    <button class="modal-close" id="closeHistory">
+      Cerrar
+    </button>
+  </div>
+</div>
+
+
+<script src="js/pagos.js"></script>
+</body>
+</html>

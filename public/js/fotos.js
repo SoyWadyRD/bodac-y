@@ -1,6 +1,13 @@
 const photoGrid = document.getElementById('photoGrid');
 const messageEl = document.getElementById('message');
 
+const role = localStorage.getItem('role');
+
+if (!role || role !== 'admin') {
+  window.location.replace('/index.html');
+}
+
+
 // --- Cargar fotos pendientes ---
 async function loadPendingPhotos() {
   try {

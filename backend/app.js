@@ -5,6 +5,7 @@ const path = require('path');
 const connectDB = require('./config/db');
 const cloudinaryRoutes = require('./routes/cloudinaryRoutes');
 const galleryRouter = require('./routes/gallery');
+const paymentRoutes = require('./routes/payments');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,6 +23,7 @@ app.use('/api', require('./routes/auth')); // 👈 AQUÍ
 // Rutas
 app.use('/api/cloudinary', cloudinaryRoutes);
 app.use('/api/gallery', galleryRouter); // <--- IMPORTANTE
+app.use('/api/payments', paymentRoutes);
 
 // Servir frontend
 app.use(express.static(path.join(__dirname, '../public')));
