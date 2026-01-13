@@ -63,6 +63,24 @@ paymentsMap[item.id] = payment;
     const card = document.createElement('div');
     card.className = 'payment-card';
 
+    function normalizeText(text = '') {
+  return text
+    .toLowerCase()
+    .normalize('NFD')              // separa letras y acentos
+    .replace(/[\u0300-\u036f]/g, ''); // elimina acentos
+}
+
+
+    // Texto completo para búsqueda
+const searchableText = normalizeText(`
+  ${item.nombre} ${item.apellido}
+  ${item.acompanantes?.map(a => a.nombre).join(' ') || ''}
+`);
+
+
+
+card.dataset.search = searchableText;
+
     card.innerHTML = `
       <div class="card-header">
   <div>
@@ -169,6 +187,61 @@ historyBtn.addEventListener('click', () => {
 
 
 
+
+
+
+
+
+
+  const searchToggle = document.getElementById('searchToggle');
+  const searchInput = document.getElementById('searchInput');
+
+  if (searchToggle && searchInput) {
+    searchToggle.addEventListener('click', () => {
+      searchInput.classList.toggle('hidden');
+      searchInput.focus();
+    });
+
+    searchInput.addEventListener('input', () => {
+  const query = normalizeText(searchInput.value);
+  const cards = document.querySelectorAll('.payment-card');
+
+  cards.forEach(card => {
+    const text = card.dataset.search || '';
+    card.style.display = text.includes(query) ? 'block' : 'none';
+  });
+});
+
+  }
+
+  const searchBox = document.getElementById('searchBox');
+
+
+// Abrir
+searchToggle.addEventListener('click', (e) => {
+  e.stopPropagation();
+  searchBox.classList.add('open');
+  setTimeout(() => searchInput.focus(), 200);
+});
+
+// Cerrar al hacer click fuera SOLO si el input está vacío
+document.addEventListener('click', (e) => {
+  if (!searchBox.contains(e.target)) {
+    if (searchInput.value.trim() === '') { // Solo cerrar si no hay texto
+      searchBox.classList.remove('open');
+      searchInput.value = '';
+      searchInput.dispatchEvent(new Event('input'));
+    } else {
+      // Mantener abierto si hay texto
+      searchInput.focus(); // opcional: seguir enfocado
+    }
+  }
+});
+
+
+
+
+
     container.appendChild(card);
 
 
@@ -253,5 +326,11 @@ function openHistoryModal(nombre, attendanceId) {
 
   historyModal.classList.remove('hidden');
 }
+
+
+
+
+
+
 
 
